@@ -1,0 +1,32 @@
+{
+    "name": "bun-less-plugin",
+    "license": "MIT",
+    "version": "0.0.1",
+    "description": "A bun builder plugin for compiling Less file.",
+    "main": "index.mjs",
+    "scripts": {
+        "play": "bun ./playground/build.mjs",
+        "server": "bun ./playground/server.mjs"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bunjs/bun-less-plugin.git"
+    },
+    "keywords": [
+        "bun",
+        "less",
+        "plugin"
+    ],
+    "author": "elantion@gmail.com",
+    "bugs": {
+        "url": "https://github.com/lazycoffee/bun-less-plugin/issues"
+    },
+    "homepage": "https://github.com/lazycoffee/bun-less-plugin",
+    "dependencies": {
+        "less": "^4.2.2"
+    },
+    "devDependencies": {
+        "@types/bun": "^1.2.4",
+        "mime": "^4.0.6"
+    }
+}
