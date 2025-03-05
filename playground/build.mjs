@@ -1,5 +1,5 @@
 import path from "path";
-import BunLessPlugin from "../index.mjs";
+import BunPluginLess from "../index.mjs";
 import fs from "fs";
 
 const ROOT_DIR = process.cwd();
@@ -11,7 +11,7 @@ async function main() {
     await Bun.build({
         entrypoints: [indexPath],
         outdir: outDir,
-        plugins: [BunLessPlugin],
+        plugins: [BunPluginLess],
     });
 }
 main();
