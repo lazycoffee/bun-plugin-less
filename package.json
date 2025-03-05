@@ -1,5 +1,5 @@
 {
-    "name": "bun-plugin-less",
+    "name": "less-bun-plugin",
     "license": "MIT",
     "version": "0.0.2",
     "description": "A bun builder plugin for compiling Less file.",
@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/lazycoffee/bun-plugin-less.git"
+        "url": "https://github.com/lazycoffee/less-bun-plugin.git"
     },
     "keywords": [
         "bun",
@@ -19,9 +19,9 @@
     ],
     "author": "elantion@gmail.com",
     "bugs": {
-        "url": "https://github.com/lazycoffee/bun-plugin-less/issues"
+        "url": "https://github.com/lazycoffee/less-bun-plugin/issues"
     },
-    "homepage": "https://github.com/lazycoffee/bun-plugin-less",
+    "homepage": "https://github.com/lazycoffee/less-bun-plugin",
     "dependencies": {
         "less": "^4.2.2"
     },

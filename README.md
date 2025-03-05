@@ -1,4 +1,4 @@
-# bun-plugin-less
+# less-bun-plugin
 
 A bun bundler plugin for compiling Less file. It is just a wrapper of less compiler(https://lesscss.org/).
 
@@ -7,12 +7,12 @@ A bun bundler plugin for compiling Less file. It is just a wrapper of less compi
 Just use it like any other bun plugin.
 
 ```js
-import BunPluginLess from "bun-plugin-less";
+import LessBunPlugin from "less-bun-plugin";
 
 Bun.build({
     entrypoints: ["./index.html"],
     outdir: "./dist",
-    plugins: [BunPluginLess],
+    plugins: [LessBunPlugin],
 });
 ```
 
