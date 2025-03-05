@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "less-bun-plugin",
+      "name": "lc-bun-plugin",
       "dependencies": {
         "less": "^4.2.2",
       },

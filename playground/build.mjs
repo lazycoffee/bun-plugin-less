@@ -1,17 +1,28 @@
 import path from "path";
-import LessBunPlugin from "../index.mjs";
+import { bunPluginLess, bunPluginHtml } from "../index.mjs";
 import fs from "fs";
 
 const ROOT_DIR = process.cwd();
-
+const SOURCE_DIR = path.join(ROOT_DIR, "playground/source");
+const OUT_DIR = path.join(ROOT_DIR, "playground/dist");
 async function main() {
-    const indexPath = path.join(ROOT_DIR, "playground/source/index.html");
-    const outDir = path.join(ROOT_DIR, "playground/dist");
-    fs.existsSync(outDir) && fs.rmdirSync(outDir, { recursive: true });
-    await Bun.build({
-        entrypoints: [indexPath],
-        outdir: outDir,
-        plugins: [LessBunPlugin],
+    // entry points
+    const indexPath = path.join(SOURCE_DIR, "index.mjs");
+    const userLoginPath = path.join(SOURCE_DIR, "user/login.mjs");
+    // less plugin
+    const BunPluginLess = bunPluginLess();
+    // clear output dir
+    fs.existsSync(OUT_DIR) && fs.rmdirSync(OUT_DIR, { recursive: true });
+    // build
+    const { outputs } = await Bun.build({
+        entrypoints: [indexPath, userLoginPath],
+        outdir: OUT_DIR,
+        plugins: [BunPluginLess],
+    });
+    bunPluginHtml({
+        templatePath: path.join(SOURCE_DIR, "template.html"),
+        outputs,
+        outdir: OUT_DIR,
     });
 }
 main();
