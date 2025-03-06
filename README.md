@@ -18,19 +18,21 @@ async function main() {
         sourceMap: { sourceMapFileInline: true },
         // extra config: https://lesscss.org/usage/#programmatic-usage
     });
-
-    const { outputs } = await Bun.build({
-        entrypoints: ["./index.html"],
+    const buildConfig = {
+        // bunPluginHtml not support .html as entry point
+        // you can use .js or .mjs
+        entrypoints: ["./index.js"],
         outdir: "./dist",
         plugins: [BunPluginLess],
-    });
+    };
+    const { outputs } = await Bun.build();
     // has to be called after bun.build()
     bunPluginHtml({
         templatePath: path.join(process.cwd(), "front/template.html"),
         // I need to known the output path to inject the bundle path
         outputs,
-        // I also need to known the output dir to inject the assets path
-        outdir: "./dist",
+        // I also need to known the build config to inject built assets
+        buildConfig,
     });
 }
 main();

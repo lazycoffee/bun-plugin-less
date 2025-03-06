@@ -14,15 +14,16 @@ async function main() {
     // clear output dir
     fs.existsSync(OUT_DIR) && fs.rmdirSync(OUT_DIR, { recursive: true });
     // build
-    const { outputs } = await Bun.build({
+    const buildConfig = {
         entrypoints: [indexPath, userLoginPath],
         outdir: OUT_DIR,
         plugins: [BunPluginLess],
-    });
+    };
+    const { outputs } = await Bun.build(buildConfig);
     bunPluginHtml({
         templatePath: path.join(SOURCE_DIR, "template.html"),
         outputs,
-        outdir: OUT_DIR,
+        buildConfig,
     });
 }
 main();

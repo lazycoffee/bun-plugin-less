@@ -28,7 +28,7 @@ export function bunPluginHtml(config) {
     if (!config) {
         throw new Error("html plugin config is required");
     }
-    const { templatePath, outputs, outdir } = config;
+    const { templatePath, outputs, buildConfig } = config;
     if (!templatePath) {
         throw new Error("html plugin config.templatePath is required");
     }
@@ -38,19 +38,49 @@ export function bunPluginHtml(config) {
     if (!fs.existsSync(templatePath)) {
         throw new Error("html plugin config.templatePath is not exists");
     }
+    const { outdir, entrypoints, root } = buildConfig;
     if (!outdir) {
-        throw new Error("html plugin config.outdir is required");
+        throw new Error("html plugin config.buildConfig.outdir is required");
     }
+    let sourceDir;
+    if (root) {
+        sourceDir = root;
+    } else {
+        // guess source dir
+        // maybe the shortest one
+        sourceDir = path.dirname(entrypoints[0]);
+        for (const entryPath of entrypoints) {
+            const dir = path.dirname(entryPath);
+            if (sourceDir.length > dir.length) {
+                sourceDir = dir;
+            }
+        }
+    }
+
+    const entryInfoList = entrypoints.map((entryPath) => {
+        const ext = path.extname(entryPath);
+        const basename = path.basename(entryPath, ext);
+        const dir = path.dirname(entryPath);
+        const relativePath = path.relative(sourceDir, path.join(dir, basename));
+        return {
+            ext,
+            relativePath,
+        };
+    });
     const htmlText = fs.readFileSync(templatePath, "utf8");
     const jsEntryList = outputs.filter((each) => each.kind === "entry-point");
     jsEntryList.forEach((buildArtifact) => {
         const jsFilePath = buildArtifact.path;
         const fileDir = path.dirname(jsFilePath);
         const ext = path.extname(jsFilePath);
+        const fileName = path.basename(jsFilePath, ext);
+        const relativePath = path.relative(
+            outdir,
+            path.join(fileDir, fileName),
+        );
         if (ext !== ".js") {
             throw new Error("Only js file is supported");
         }
-        const fileName = path.basename(jsFilePath, ext);
         const cssFilePath = path.join(fileDir, `${fileName}.css`);
         const reg = /(\s*)\<\s*\/\s*head>\s*/;
         const match = htmlText.match(reg);
@@ -60,8 +90,16 @@ export function bunPluginHtml(config) {
         const headTag = match[0];
         const intend = match[1].replace(/[\r\n]+/, "");
         // inject js file
+        const foundEntry = entryInfoList.find(
+            (each) => each.relativePath === relativePath,
+        );
+        if (!foundEntry) {
+            throw new Error(`No entry point found for ${jsFilePath}`);
+        }
+        const scriptType =
+            foundEntry.ext === ".mjs" ? "module" : "text/javascript";
         const jsUrl = jsFilePath.replace(outdir, "").replace(/\\/g, "/");
-        const jsTag = `\n${intend}${intend}<script src="${jsUrl}"></script>`;
+        const jsTag = `\n${intend}${intend}<script src="${jsUrl}" type="${scriptType}"></script>`;
         let injectHtml = htmlText.replace(reg, jsTag + headTag);
         // inject css file
         if (fs.existsSync(cssFilePath)) {

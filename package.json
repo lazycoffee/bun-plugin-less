@@ -1,7 +1,7 @@
 {
     "name": "lc-bun-plugin",
     "license": "MIT",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Some bun bundler plugins.",
     "main": "index.mjs",
     "scripts": {
