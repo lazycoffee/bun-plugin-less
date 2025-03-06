@@ -1,5 +1,5 @@
 import path from "path";
-import { bunPluginLess, bunPluginHtml } from "../index.mjs";
+import { bunPluginLess, bunPluginHtml, bunPluginSvg } from "../index.mjs";
 import fs from "fs";
 
 const ROOT_DIR = process.cwd();
@@ -17,7 +17,7 @@ async function main() {
     const buildConfig = {
         entrypoints: [indexPath, userLoginPath],
         outdir: OUT_DIR,
-        plugins: [BunPluginLess],
+        plugins: [BunPluginLess, bunPluginSvg()],
     };
     const { outputs } = await Bun.build(buildConfig);
     bunPluginHtml({

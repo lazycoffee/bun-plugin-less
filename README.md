@@ -4,13 +4,14 @@ Some useful plugins for bun bundler.
 
 -   bunPluginLess - A less compiler plugin
 -   bunPluginHtml - Use one html template for multi entry points
+-   bunPluginSvg - Import svg as raw string
 
 ## Usage
 
 Just use it like any other bun plugin.
 
 ```js
-import { bunPluginLess, bunPluginHtml } from "lc-bun-plugin";
+import { bunPluginLess, bunPluginHtml, bunPluginSvg } from "lc-bun-plugin";
 import path from "path";
 
 async function main() {
@@ -23,7 +24,7 @@ async function main() {
         // you can use .js or .mjs
         entrypoints: ["./index.js"],
         outdir: "./dist",
-        plugins: [BunPluginLess],
+        plugins: [BunPluginLess, bunPluginSvg()],
     };
     const { outputs } = await Bun.build();
     // has to be called after bun.build()
